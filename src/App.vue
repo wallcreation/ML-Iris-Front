@@ -1,47 +1,34 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
+import Form from './components/Form.vue'
+import Output from './components/Output.vue'
+import { ref } from 'vue'
+import axios from 'axios'
+const formData = ref(null)
+const isLoading = ref(false)
+
+async function handleFormSubmit(data) {
+  formData.value = data
+  try {
+    isLoading.value = true
+    const response = await axios.post('http://localhost:8000/iris/predict', data)
+    formData.value = response.data
+  } catch (error) {
+    console.error('Error during form submission:', error)
+  } finally {
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
+  <Header />
+  <main class="w-full flex-grow mt-2 flex flex-col md:flex-row gap-2 rounded-lg p-4">
+    <Form :isLoading="isLoading" @submit="handleFormSubmit" />
+    <Output :isLoadding="isLoading" :data="formData" />
   </main>
+  <Footer />
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+<style scoped></style>
