@@ -6,6 +6,7 @@ import Output from './components/Output.vue'
 import { ref } from 'vue'
 import axios from 'axios'
 const formData = ref(null)
+const resultData = ref(null)
 const isLoading = ref(false)
 
 async function handleFormSubmit(data) {
@@ -13,7 +14,7 @@ async function handleFormSubmit(data) {
   try {
     isLoading.value = true
     const response = await axios.post('http://localhost:8000/iris/predict', data)
-    formData.value = response.data
+    resultData.value = response.data
   } catch (error) {
     console.error('Error during form submission:', error)
   } finally {
@@ -24,9 +25,9 @@ async function handleFormSubmit(data) {
 
 <template>
   <Header />
-  <main class="w-full flex-grow mt-2 flex flex-col md:flex-row gap-2 rounded-lg p-4">
+  <main class="w-full flex-grow flex flex-col md:flex-row gap-2 rounded-lg p-4">
     <Form :isLoading="isLoading" @submit="handleFormSubmit" />
-    <Output :isLoadding="isLoading" :data="formData" />
+    <Output :isLoading="isLoading" :data="formData" :result="resultData" />
   </main>
   <Footer />
 </template>

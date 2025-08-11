@@ -29,12 +29,12 @@ function onSubmit() {
 }
 </script>
 <template>
-  <div class="w-1/2 space-y-1.5">
+  <div class="md:w-1/2 space-y-1.5">
     <h2 class="py-2 bg-gray-900 rounded-lg text-center text-2xl">Enter the flower measurements</h2>
     <div v-if="err" class="px-6" :class="err ? 'animate-bounce' : ''">
       <p class="p-2 rounded-lg bg-red-500">{{ err }}</p>
     </div>
-    <form action="" method="post" class="px-2 flex flex-col gap-2">
+    <form action="" method="post" class="px-2 grid grid-cols-2 md:flex md:flex-col gap-2">
       <input
         type="number"
         step="0.01"
@@ -71,7 +71,7 @@ function onSubmit() {
         v-model="petalWidth"
         class="p-2 rounded-lg bg-white text-fuchsia-950 font-bold outline-none border-2 border-white focus:bg-gray-900 focus:text-fuchsia-500 focus:border-fuchsia-500"
       />
-      <div class="flex justify-center">
+      <div class="col-span-2 flex justify-center">
         <button
           @click.prevent="onSubmit"
           :disabled="isLoading"
